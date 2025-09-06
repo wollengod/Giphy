@@ -24,8 +24,8 @@ class _GifScreenState extends State<GifScreen> {
     _loadGifs();
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) {
         _loadMore();
       }
     });
@@ -79,6 +79,23 @@ class _GifScreenState extends State<GifScreen> {
               ),
             ),
           ),
+          Container(
+            margin: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  query.isEmpty
+                      ? "Trending GIFs 🔥"
+                      : "Results for: $query",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: GridView.builder(
               controller: _scrollController,
@@ -92,7 +109,8 @@ class _GifScreenState extends State<GifScreen> {
               itemCount: gifs.length,
               itemBuilder: (context, index) {
                 final gif = gifs[index];
-                final url = gif["images"]["fixed_height"]["url"];
+                // final url = gif["images"]["fixed_height"]["url"];
+                final url = gif["images"]["fixed_width_small"]["url"];
                 return ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(url, fit: BoxFit.cover),
